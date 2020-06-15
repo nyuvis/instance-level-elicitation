@@ -35,13 +35,16 @@
     showQuestions = false;
   }
 
-  function onClickNext() {
+  function addResult() {
     results.push({
       instance,
       guess,
       confidence
     });
+  }
 
+  function onClickNext() {
+    addResult();
     index +=1;
     guess = null;
     confidence = null;
@@ -49,6 +52,7 @@
   }
 
   function onClickComplete() {
+    addResult();
     dispatch('complete', {
       results
     });
@@ -157,7 +161,6 @@
 
   table {
     border-spacing: 1em 0;
-    margin: 0 -1em;
   }
 
   th {
