@@ -13,10 +13,11 @@
 
   let numberOfInstances;
   let dataset;
+  let samplingStrategy;
   let results;
 
   function setupComplete(event) {
-    ({numberOfInstances, dataset} = event.detail);
+    ({numberOfInstances, dataset, samplingStrategy} = event.detail);
     state = states.QUIZ;
   }
 
@@ -33,7 +34,7 @@
 {#if state === states.SETUP}
   <Setup on:complete={setupComplete}/>
 {:else if state === states.QUIZ}
-  <Quiz {dataset} {numberOfInstances} on:complete={quizComplete}/>
+  <Quiz {dataset} {numberOfInstances} {samplingStrategy} on:complete={quizComplete}/>
 {:else}
   <Review {results} on:complete={reviewComplete}/>
 {/if}

@@ -3,15 +3,24 @@
   import * as d3 from "d3";
 
   const dispatch = createEventDispatcher();
+
+  const samplingStrategies = [
+    'Least confidence',
+    'Mixed confidence',
+    'Random',
+  ];
+
   let datasets = [];
   let selectedDemoDataset;
+  let selectedSamplingStrategy;
   let numberOfInstances = 1;
 
   function onBegin() {
     d3.csv(selectedDemoDataset.path, d3.autoType).then(data => {
       dispatch('complete', {
         dataset: data,
-        numberOfInstances: Math.min(Math.max(1, numberOfInstances), data.length)
+        numberOfInstances: Math.min(Math.max(1, numberOfInstances), data.length),
+        samplingStrategy: selectedSamplingStrategy,
       });
     })
   }
@@ -34,6 +43,15 @@
       <select id="dataset-selector" name="dataset-selector" bind:value={selectedDemoDataset}>
         {#each datasets as dataset}
           <option value={dataset}>{dataset.name}</option>
+        {/each}
+      </select>
+    </div>
+
+    <div class="section">
+      <label for="sampling-selector">Sampling Strategy</label>
+      <select id="sampling-selector" name="sampling-selector" bind:value={selectedSamplingStrategy}>
+        {#each samplingStrategies as strategy}
+          <option value={strategy}>{strategy}</option>
         {/each}
       </select>
     </div>

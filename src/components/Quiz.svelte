@@ -3,6 +3,8 @@
   import * as d3_array from "d3-array";
   import * as d3_all from "d3";
 
+  import { sample } from '../sampling.js';
+
   const d3 = {...d3_all, ...d3_array};
 
   const dispatch = createEventDispatcher();
@@ -10,8 +12,10 @@
 
   export let dataset;
   export let numberOfInstances;
+  export let samplingStrategy;
 
-  $: indices = d3.shuffle(d3.range(dataset.length)).slice(0, numberOfInstances);
+  $: indices = sample(dataset, samplingStrategy, numberOfInstances);
+
   $: features = dataset.columns.filter(d => d !== 'label'
       && d !== 'prediction'
       && d !== 'confidence');
