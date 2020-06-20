@@ -8,23 +8,20 @@
   const d3 = {...d3_all, ...d3_array};
 
   const dispatch = createEventDispatcher();
-  const format = d3.format('.2');
 
   export let dataset;
   export let numberOfInstances;
   export let samplingStrategy;
+  export let confidenceScale;
 
   $: indices = sample(dataset, samplingStrategy, numberOfInstances);
 
   $: features = dataset.columns.filter(d => d !== 'label'
       && d !== 'prediction'
       && d !== 'confidence');
-  $: labels = Array.from(new Set(dataset.map(d => d['label']))).sort();
 
   let index = 0;
   $: instance = dataset[indices[index]];
-
-  let confidenceLabels = ['none', 'low', 'moderate', 'high'];
 
   let guess = null;
   let confidence = null;
@@ -64,32 +61,39 @@
 </script>
 
 <div class="container">
-  <div class="content">
+  <div>
     <div class="section">Instance {index + 1} of {numberOfInstances}.</div>
+    {#if dataset.type === "text"}
+      <div class="section text">
+        {instance['text']}
+      </div>
+    {:else}
+      <div class="section">
+        <table>
+          <thead>
+            <th>Feature</th>
+            <th>Value</th>
+          </thead>
+          <tbody>
+            {#each features as feature}
+              <tr>
+                <td>{feature}</td>
+                <td class={isNaN(instance[feature]) ? "left-align" : "right-align"}>
+                  {instance[feature]}
+                </td>
+              </tr>
+            {/each}
+          </tbody>
+        </table>
+      </div>
+    {/if}
+  </div>
 
-    <div class="section">
-      <table>
-        <thead>
-          <th>Feature</th>
-          <th>Value</th>
-        </thead>
-        <tbody>
-          {#each features as feature}
-            <tr>
-              <td>{feature}</td>
-              <td class={isNaN(instance[feature]) ? "left-align" : "right-align"}>
-                {instance[feature]}
-              </td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    </div>
-
+  <div>
     {#if showQuestions}
       <div class="section">
         <div class="label">What is the class for this instance?</div>
-        {#each labels as label}
+        {#each dataset.labels as label}
           <label class="block">
             <input type="radio" bind:group={guess} value={label}>
             {label}
@@ -100,7 +104,7 @@
       <div class="section">
         <div class="label">What is your level of confidence that you chose the correct class?</div>
         <div class="confidence">
-          {#each confidenceLabels as label, i}
+          {#each confidenceScale.range() as label, i}
             <div class="radio-option">
               <input type="radio" name="confidence-{i}" id="confidence-{i}"
                 bind:group={confidence} value={label}>
@@ -131,7 +135,7 @@
           <tr>
             <td>ML model</td>
             <td>{instance['prediction']}</td>
-            <td>{format(instance['confidence'])}</td>
+            <td>{confidenceScale(instance['confidence'])}</td>
           </tr>
         </tbody>
       </table>
@@ -150,13 +154,13 @@
 <style>
   .container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .content {
-    width: 600px;
-    display: flex;
-    flex-direction: column;
+  .text {
+    max-width: 50em;
+    line-height: 1.3;
   }
 
   .block {
@@ -188,6 +192,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     text-align: center;
     flex: 1;
   }

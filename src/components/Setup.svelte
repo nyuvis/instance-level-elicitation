@@ -17,6 +17,9 @@
 
   function onBegin() {
     d3.csv(selectedDemoDataset.path, d3.autoType).then(data => {
+      data.labels = Array.from(new Set(data.map(d => d['label']))).sort();
+      data.type = selectedDemoDataset.type;
+
       dispatch('complete', {
         dataset: data,
         numberOfInstances: Math.min(Math.max(1, numberOfInstances), data.length),

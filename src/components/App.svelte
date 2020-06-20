@@ -3,11 +3,17 @@
   import Quiz from './Quiz.svelte';
   import Review from './Review.svelte';
 
-  let states = {
+  import { scaleQuantize } from "d3-scale";
+  import { extent } from "d3-array";
+
+  const states = {
     SETUP: 0,
     QUIZ: 1,
     REVIEW: 2,
-  }
+  };
+
+  const confidenceScale = scaleQuantize()
+    .range(['none', 'low', 'moderate', 'high']);
 
   let state = states.SETUP;
 
@@ -18,6 +24,7 @@
 
   function setupComplete(event) {
     ({numberOfInstances, dataset, samplingStrategy} = event.detail);
+    confidenceScale.domain([1 / dataset.labels.length, 1]);
     state = states.QUIZ;
   }
 
@@ -34,7 +41,7 @@
 {#if state === states.SETUP}
   <Setup on:complete={setupComplete}/>
 {:else if state === states.QUIZ}
-  <Quiz {dataset} {numberOfInstances} {samplingStrategy} on:complete={quizComplete}/>
+  <Quiz {dataset} {numberOfInstances} {samplingStrategy} {confidenceScale} on:complete={quizComplete}/>
 {:else}
-  <Review {results} on:complete={reviewComplete}/>
+  <Review {results} {confidenceScale} on:complete={reviewComplete}/>
 {/if}

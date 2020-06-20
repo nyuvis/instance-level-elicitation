@@ -1,2 +1,3 @@
-name,path
-Graduate Admissions,/datasets/graduate-admissions-binary-with-predictions.csv
+name,path,type
+Graduate Admissions,/datasets/graduate-admissions-binary-with-predictions.csv,tabular
+Newsgroups,https://gist.githubusercontent.com/DanielKerrigan/f8b05a29b76a48ddc137cd3d98805a2f/raw/48710270fa4e95ffe1c9f8dc8025f45f129b06bc/newsgroups-rec.csv,text

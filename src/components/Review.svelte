@@ -1,13 +1,14 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+
   import * as d3_array from "d3-array";
   import * as d3_all from "d3";
 
   const d3 = {...d3_all, ...d3_array};
 
   const dispatch = createEventDispatcher();
-  const format = d3.format('.2');
 
+  export let confidenceScale;
   export let results;
 
   function onClickRestart() {
@@ -44,7 +45,7 @@
               <td>{guess}</td>
               <td>{confidence}</td>
               <td>{instance['prediction']}</td>
-              <td>{format(instance['confidence'])}</td>
+              <td>{confidenceScale(instance['confidence'])}</td>
             </tr>
           {/each}
         </tbody>
