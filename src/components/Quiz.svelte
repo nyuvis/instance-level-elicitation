@@ -194,6 +194,7 @@
 
   .radio-horizontal > input[type="radio"] {
     margin-top: 0;
+    margin-bottom: 0;
   }
 
   .radio-vertical {
