@@ -12,3 +12,21 @@ body {
   height: 100vh;
   width: 100vw;
 }
+
+.section {
+  margin: 1rem 0;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+h2 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 1em;
+}

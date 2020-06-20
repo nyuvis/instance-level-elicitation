@@ -60,70 +60,68 @@
   }
 </script>
 
-<div class="container">
-  <div>
-    <div class="section">Instance {index + 1} of {numberOfInstances}.</div>
-    {#if dataset.type === "text"}
-      <div class="section text">
-        {instance['text']}
-      </div>
-    {:else}
-      <div class="section">
-        <table>
-          <thead>
-            <th>Feature</th>
-            <th>Value</th>
-          </thead>
-          <tbody>
-            {#each features as feature}
-              <tr>
-                <td>{feature}</td>
-                <td class={isNaN(instance[feature]) ? "left-align" : "right-align"}>
-                  {instance[feature]}
-                </td>
-              </tr>
-            {/each}
-          </tbody>
-        </table>
-      </div>
-    {/if}
-  </div>
+<div class="content">
+  <div class="section">Instance {index + 1} of {numberOfInstances}:</div>
+  {#if dataset.type === "text"}
+    <div class="section instance text">
+      {instance['text']}
+    </div>
+  {:else}
+    <div class="section instance">
+      <table>
+        <thead>
+          <th>Feature</th>
+          <th>Value</th>
+        </thead>
+        <tbody>
+          {#each features as feature}
+            <tr>
+              <td>{feature}</td>
+              <td class={isNaN(instance[feature]) ? "left-align" : "right-align"}>
+                {instance[feature]}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    </div>
+  {/if}
 
-  <div>
-    {#if showQuestions}
-      <div class="section">
-        <div class="label">What is the class for this instance?</div>
-        {#each dataset.labels as label}
-          <label class="block">
-            <input type="radio" bind:group={guess} value={label}>
-            {label}
-          </label>
+  {#if showQuestions}
+    <div class="section">
+      <div class="label">What is the class for this instance?</div>
+      {#each dataset.labels as label, i}
+        <div class="radio-horizontal">
+          <input type="radio" name="class-{i}" id="class-{i}" bind:group={guess} value={label}>
+          <label for="class-{i}">{label}</label>
+        </div>
+      {/each}
+    </div>
+
+    <div class="section">
+      <div class="label">What is your level of confidence that you chose the correct class?</div>
+      <div class="confidence">
+        {#each confidenceScale.range() as label, i}
+          <div class="radio-vertical">
+            <input type="radio" name="confidence-{i}" id="confidence-{i}"
+              bind:group={confidence} value={label}>
+            <label for="confidence-{i}">{label}</label>
+          </div>
         {/each}
       </div>
+    </div>
 
-      <div class="section">
-        <div class="label">What is your level of confidence that you chose the correct class?</div>
-        <div class="confidence">
-          {#each confidenceScale.range() as label, i}
-            <div class="radio-option">
-              <input type="radio" name="confidence-{i}" id="confidence-{i}"
-                bind:group={confidence} value={label}>
-              <label for="confidence-{i}">{label}</label>
-            </div>
-          {/each}
-        </div>
-      </div>
+    <div class="section">
+      <button disabled={!canSubmit} on:click={onSubmitAnswers}>Submit</button>
+    </div>
+  {:else}
+    <div class="section">Ground truth: {instance['label']}</div>
 
-      <div class="section">
-        <button disabled={!canSubmit} on:click={onSubmitAnswers}>Submit</button>
-      </div>
-    {:else}
-      <div class="section">Ground truth: {instance['label']}</div>
-
+    <div class="section">
       <table>
         <thead>
           <th>Predictor</th>
-          <th>Guess</th>
+          <th>Prediction</th>
           <th>Confidence</th>
         </thead>
         <tbody class="left-align">
@@ -139,32 +137,37 @@
           </tr>
         </tbody>
       </table>
+    </div>
 
-      <div class="section">
-        {#if index < numberOfInstances - 1}
-          <button on:click={onClickNext}>Next</button>
-        {:else}
-          <button on:click={onClickComplete}>Complete</button>
-        {/if}
-      </div>
-    {/if}
-  </div>
+    <div class="section">
+      {#if index < numberOfInstances - 1}
+        <button on:click={onClickNext}>Next</button>
+      {:else}
+        <button on:click={onClickComplete}>Complete</button>
+      {/if}
+    </div>
+  {/if}
 </div>
 
 <style>
-  .container {
+  .content {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    width: 40em;
+    max-width: 40em;
+  }
+
+  .instance {
+    overflow-y: auto;
+    min-height: 0px;
+  }
+
+  .content > .section {
+    margin-top: 0;
   }
 
   .text {
-    max-width: 50em;
     line-height: 1.3;
-  }
-
-  .block {
-    display: block;
   }
 
   table {
@@ -184,17 +187,26 @@
     text-align: right;
   }
 
-  .section {
-    margin: 0.5em 0;
+  .radio-horizontal {
+    display: flex;
+    align-items: center;
   }
 
-  .radio-option {
+  .radio-horizontal > input[type="radio"] {
+    margin-top: 0;
+  }
+
+  .radio-vertical {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     flex: 1;
+  }
+
+  .radio-vertical > input[type="radio"] {
+    margin: 0;
   }
 
   .confidence {

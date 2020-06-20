@@ -1,5 +1,7 @@
 # Instance Level Elicitation
 
+[Demo](https://instance-level-elicitation.vercel.app/)
+
 ## How to run
 
 First clone this repository and install [npm](https://www.npmjs.com/get-npm). Then run the following:
@@ -13,7 +15,7 @@ npm run build
 npm run start
 ```
 
-## Demo Dataset
+## Demo Datasets
 
 * [Graduate Admission](https://www.kaggle.com/mohansacharya/graduate-admissions)
   * Mohan S Acharya, Asfia Armaan, Aneeta S Antony : A Comparison of Regression Models for Prediction of Graduate Admissions, IEEE International Conference on Computational

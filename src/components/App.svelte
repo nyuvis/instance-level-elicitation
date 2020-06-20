@@ -38,10 +38,25 @@
   }
 </script>
 
-{#if state === states.SETUP}
-  <Setup on:complete={setupComplete}/>
-{:else if state === states.QUIZ}
-  <Quiz {dataset} {numberOfInstances} {samplingStrategy} {confidenceScale} on:complete={quizComplete}/>
-{:else}
-  <Review {results} {confidenceScale} on:complete={reviewComplete}/>
-{/if}
+<div class="container">
+  {#if state === states.SETUP}
+    <Setup on:complete={setupComplete}/>
+  {:else if state === states.QUIZ}
+    <Quiz {dataset} {numberOfInstances} {samplingStrategy} {confidenceScale} on:complete={quizComplete}/>
+  {:else}
+    <Review {results} {confidenceScale} on:complete={reviewComplete}/>
+  {/if}
+</div>
+
+<style>
+  .container {
+    width: 100vw;
+    height: 100vh;
+
+    padding: 3em;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+  }
+</style>

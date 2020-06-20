@@ -36,54 +36,47 @@
   });
 </script>
 
-<div class="container">
-  <div class="content">
-    <h1>Instance-level Elicitation</h1>
-    <h2>Setup</h2>
+<div class="content">
+  <h1>Instance-level Elicitation</h1>
+  <h2>Setup</h2>
 
-    <div class="section">
-      <label for="dataset-selector">Dataset</label>
-      <select id="dataset-selector" name="dataset-selector" bind:value={selectedDemoDataset}>
-        {#each datasets as dataset}
-          <option value={dataset}>{dataset.name}</option>
-        {/each}
-      </select>
-    </div>
+  <div class="section">
+    <label for="dataset-selector">Dataset</label>
+    <select id="dataset-selector" name="dataset-selector" bind:value={selectedDemoDataset}>
+      {#each datasets as dataset}
+        <option value={dataset}>{dataset.name}</option>
+      {/each}
+    </select>
+  </div>
 
-    <div class="section">
-      <label for="sampling-selector">Sampling Strategy</label>
-      <select id="sampling-selector" name="sampling-selector" bind:value={selectedSamplingStrategy}>
-        {#each samplingStrategies as strategy}
-          <option value={strategy}>{strategy}</option>
-        {/each}
-      </select>
-    </div>
+  <div class="section">
+    <label for="sampling-selector">Sampling Strategy</label>
+    <select id="sampling-selector" name="sampling-selector" bind:value={selectedSamplingStrategy}>
+      {#each samplingStrategies as strategy}
+        <option value={strategy}>{strategy}</option>
+      {/each}
+    </select>
+  </div>
 
-    <div class="section">
-      <label for="number-of-instances">Number of instances</label>
-      <input type="number" min="1"
-        name="number-of-instances" id="number-of-instances"
-        bind:value={numberOfInstances}
-      >
-    </div>
+  <div class="section">
+    <label for="number-of-instances">Number of instances</label>
+    <input type="number" min="1"
+      name="number-of-instances" id="number-of-instances"
+      bind:value={numberOfInstances}
+    >
+  </div>
 
-    <div class="section">
-      <button on:click={onBegin}>Begin</button>
-    </div>
+  <div class="section">
+    <button on:click={onBegin}>Begin</button>
   </div>
 </div>
 
 <style>
-  .container {
-    display: flex;
-    justify-content: center;
+  h1 {
+    margin-top: 0;
   }
 
   label {
     display: block;
-  }
-
-  .section {
-    margin: 0.5rem 0;
   }
 </style>

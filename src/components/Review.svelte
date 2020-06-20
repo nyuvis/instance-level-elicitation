@@ -16,58 +16,43 @@
   }
 </script>
 
-<div class="container">
-  <div class="content">
-    <div class="section">
-      <h2>Review</h2>
-    </div>
+<div class="content">
+  <div class="section">
+    <h1>Review</h1>
+    <button on:click={onClickRestart}>Restart</button>
+  </div>
 
-    <div class="section">
-      <button on:click={onClickRestart}>Restart</button>
-    </div>
+  <div class="section results">
+    <table>
+      <thead class="left-align">
+        <th>Order</th>
+        <th>Ground Truth</th>
+        <th>Your Prediction</th>
+        <th>Model Prediction</th>
+        <th>Your Confidence</th>
+        <th>Model Confidence</th>
+      </thead>
 
-    <div class="section results">
-      <table>
-        <thead class="left-align">
-          <th>Order</th>
-          <th>Ground Truth</th>
-          <th>Your Prediction</th>
-          <th>Your Confidence</th>
-          <th>Model Prediction</th>
-          <th>Model Confidence</th>
-        </thead>
-
-        <tbody>
-          {#each results as {instance, guess, confidence}, i}
-            <tr>
-              <td>{i + 1}</td>
-              <td>{instance['label']}</td>
-              <td>{guess}</td>
-              <td>{confidence}</td>
-              <td>{instance['prediction']}</td>
-              <td>{confidenceScale(instance['confidence'])}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    </div>
+      <tbody>
+        {#each results as {instance, guess, confidence}, i}
+          <tr>
+            <td>{i + 1}</td>
+            <td>{instance['label']}</td>
+            <td>{guess}</td>
+            <td>{instance['prediction']}</td>
+            <td>{confidence}</td>
+            <td>{confidenceScale(instance['confidence'])}</td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   </div>
 </div>
 
 <style>
-  .container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-  }
-
   .content {
     display: flex;
     flex-direction: column;
-  }
-
-  .section {
-    margin: 0.5em 0;
   }
 
   .results {
